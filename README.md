@@ -1,10 +1,21 @@
 # Stylos
 
-**Stylos is the extracted Rust library foundation for the Stele ecosystem.**
+**Stylos is the primary Rust library repository for the Stylos interconnect.**
 
-This repository contains the reusable crates that were split out from the `https://github.com/tasanakorn/stele` repo so they can evolve independently and be consumed as normal Rust dependencies.
+Stylos provides reusable crates for identity, config loading, transport setup, and `zenoh::Session` construction. This repo should be treated as the source-of-truth home for Stylos itself.
 
-Current crates:
+## What Stylos is
+
+Stylos is a zenoh-backed interconnect foundation intended for cross-process and cross-host communication. It is designed to support:
+
+- pub/sub on hierarchical key expressions
+- query/queryable request-reply patterns
+- shared identity conventions across consumers
+- reusable session/bootstrap code for Rust applications
+
+Today this repository contains the Rust library workspace for those core pieces.
+
+## Workspace crates
 
 | Crate | Purpose |
 | --- | --- |
@@ -14,6 +25,20 @@ Current crates:
 | `stylos-transport` | Transport helpers such as endpoint building and port walking |
 | `stylos-session` | `zenoh::Session` setup from Stylos config |
 
+## Documentation
+
+Primary Stylos docs live in this repository.
+
+| Doc | What it covers |
+| --- | --- |
+| [`docs/README.md`](docs/README.md) | Stylos doc index |
+| [`docs/architecture.md`](docs/architecture.md) | Process model, crate split, config construction, data flow |
+| [`docs/addressing.md`](docs/addressing.md) | `stylos/<realm>/<role>/<instance>` key grammar |
+| [`docs/discovery.md`](docs/discovery.md) | Multicast scouting, UDP/TCP listeners, failure modes |
+| [`docs/poc.md`](docs/poc.md) | POC scenarios and smoke-test notes |
+| [`docs/cross-lang.md`](docs/cross-lang.md) | Cross-language status notes |
+| [`docs/origin.md`](docs/origin.md) | Origin and repository positioning |
+
 ## Status
 
 Stylos is currently a **library workspace**, not an installable CLI application.
@@ -21,14 +46,8 @@ Stylos is currently a **library workspace**, not an installable CLI application.
 That means:
 
 - `cargo build` works at the workspace root
-- crates can be used as git dependencies
-- `cargo install --git https://github.com/tasanakorn/stylos.git` does **not** work yet because there is no binary target
-
-## Origin
-
-Stylos is based on code extracted from `https://github.com/tasanakorn/stele`.
-
-The goal is to separate the low-level identity/config/session/transport pieces into their own focused Rust workspace while Stele continues to use them upstream.
+- crates can be consumed as dependencies
+- `cargo install --git ...` does not work yet because there is no binary target in this repo
 
 ## Workspace layout
 
@@ -39,6 +58,7 @@ crates/
   stylos-config/
   stylos-transport/
   stylos-session/
+docs/
 ```
 
 ## Build
@@ -68,7 +88,12 @@ use stylos_config::StylosConfig;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cfg = StylosConfig::load_default()?;
-    println!("realm={} role={} instance={}", cfg.stylos.realm, cfg.stylos.role, cfg.stylos.instance);
+    println!(
+        "realm={} role={} instance={}",
+        cfg.stylos.realm,
+        cfg.stylos.role,
+        cfg.stylos.instance
+    );
     Ok(())
 }
 ```
@@ -78,11 +103,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 - Config is JSON5-based
 - `stylos-session` uses `zenoh = 1.9.0`
 - default multicast discovery address is `224.0.0.224:31746`
+- default data listeners are UDP + TCP on port `31747`
 
-## Future work
+## Near-term gaps
 
-Possible next steps:
+Useful next additions for this repo:
 
-- add crate-level docs and examples
-- add tests for identity validation and config loading
-- add a small CLI binary if install-from-git is desired
+- crate-level docs and examples
+- tests for identity validation and config loading
+- a small CLI binary if install-from-git is desired
