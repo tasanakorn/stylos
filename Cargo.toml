@@ -1,10 +1,10 @@
 [workspace]
 members = [
-    "stylos-common",
-    "stylos-identity",
-    "stylos-config",
-    "stylos-transport",
-    "stylos-session",
+    "crates/stylos-common",
+    "crates/stylos-identity",
+    "crates/stylos-config",
+    "crates/stylos-transport",
+    "crates/stylos-session",
 ]
 resolver = "2"
 
