@@ -1,0 +1,29 @@
+# Rust
+/target/
+**/*.rs.bk
+
+# Build artifacts
+/debug/
+/release/
+
+# Cargo
+/.cargo/
+
+# Editors
+/.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.*
+!.env.example
