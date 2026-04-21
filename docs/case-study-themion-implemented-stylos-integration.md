@@ -55,15 +55,22 @@ It constructs the underlying Stylos session config with:
 - `role = "themion"`
 - `instance = identity_instance`
 
-So the underlying Stylos identity uses a hostname-shaped instance value.
+So the actual validated Stylos identity uses the hostname-shaped `identity_instance`.
 
-For network-visible Themion keys, it separately uses a transport-safe direct-instance identifier:
+That matters because Stylos identity segments are documented separately in `docs/addressing.md` with restricted segment syntax. In this Themion implementation, the `<hostname>:<pid>` form is **not** presented as the canonical Stylos identity segment passed into session construction.
+
+Instead, Themion separately derives a process-specific application key component:
 
 ```text
 <hostname>:<pid>
 ```
 
-That key instance is used in published status keys and direct per-instance query keys so multiple local Themion processes on the same host can be distinguished cleanly.
+In other words, the implementation distinguishes between:
+
+- the Stylos session identity segment: `<hostname>`
+- the Themion-specific process-addressing key component: `<hostname>:<pid>`
+
+Themion uses that second value in its own application key layout so multiple local Themion processes on the same host can be distinguished cleanly.
 
 ## Session startup pattern
 
@@ -106,6 +113,8 @@ In Themion’s `crates/themion-cli/src/stylos.rs`, it constructs a status key of
 ```text
 stylos/<realm>/themion/<hostname>:<pid>/status
 ```
+
+This is an important implementation detail: this published status path is a Themion application key shape used for process-specific addressing. It should not be read as evidence that the underlying validated Stylos identity `instance` itself contains `:`.
 
 Every 5 seconds it publishes a CBOR-encoded `ThemionStatusPayload` containing:
 
@@ -215,6 +224,8 @@ stylos/<realm>/themion/instances/<hostname>:<pid>/query/tasks/request
 stylos/<realm>/themion/instances/<hostname>:<pid>/query/tasks/status
 stylos/<realm>/themion/instances/<hostname>:<pid>/query/tasks/result
 ```
+
+Again, this is Themion’s implemented application-level keying for addressing one specific local process. It is distinct from the underlying Stylos session identity tuple used when opening the session.
 
 These are not discovery queries. They are directed at one chosen Themion process instance.
 
