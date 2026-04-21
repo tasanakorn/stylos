@@ -2,7 +2,7 @@
 
 **Stylos is the primary Rust library repository for the Stylos interconnect.**
 
-Stylos provides reusable crates for identity, config loading, transport setup, and `zenoh::Session` construction. This repo should be treated as the source-of-truth home for Stylos itself.
+Stylos provides a single primary crate for identity, config loading, transport setup, and `zenoh::Session` construction. This repo should be treated as the source-of-truth home for Stylos itself.
 
 ## What Stylos is
 
@@ -13,17 +13,20 @@ Stylos is a zenoh-backed interconnect foundation intended for cross-process and 
 - shared identity conventions across consumers
 - reusable session/bootstrap code for Rust applications
 
-Today this repository contains the Rust library workspace for those core pieces.
+Today this repository contains one primary Rust library crate for those core pieces.
 
-## Workspace crates
+## Primary crate
 
 | Crate | Purpose |
 | --- | --- |
-| `stylos-common` | Shared constants, error types, and result aliases |
-| `stylos-identity` | Realm/role/instance identity model and key composition |
-| `stylos-config` | JSON5 config schema and loader |
-| `stylos-transport` | Transport helpers such as endpoint building and port walking |
-| `stylos-session` | `zenoh::Session` setup from Stylos config |
+| `stylos` | Identity model, JSON5 config loading, transport helpers, and `zenoh::Session` setup |
+
+The crate keeps internal module boundaries so applications can extend or consume only the pieces they need:
+
+- `stylos::identity`
+- `stylos::config`
+- `stylos::transport`
+- `stylos::session`
 
 ## Documentation
 
@@ -32,7 +35,7 @@ Primary Stylos docs live in this repository.
 | Doc | What it covers |
 | --- | --- |
 | [`docs/README.md`](docs/README.md) | Stylos doc index |
-| [`docs/architecture.md`](docs/architecture.md) | Process model, crate split, config construction, data flow |
+| [`docs/architecture.md`](docs/architecture.md) | Process model, module layout, config construction, data flow |
 | [`docs/addressing.md`](docs/addressing.md) | `stylos/<realm>/<role>/<instance>` key grammar |
 | [`docs/discovery.md`](docs/discovery.md) | Multicast scouting, UDP/TCP listeners, failure modes |
 | [`docs/poc.md`](docs/poc.md) | POC scenarios and smoke-test notes |
@@ -41,23 +44,19 @@ Primary Stylos docs live in this repository.
 
 ## Status
 
-Stylos is currently a **library workspace**, not an installable CLI application.
+Stylos is currently a **library crate**, not an installable CLI application.
 
 That means:
 
 - `cargo build` works at the workspace root
-- crates can be consumed as dependencies
+- the crate can be consumed as a dependency
 - `cargo install --git ...` does not work yet because there is no binary target in this repo
 
 ## Workspace layout
 
 ```text
 crates/
-  stylos-common/
-  stylos-identity/
-  stylos-config/
-  stylos-transport/
-  stylos-session/
+  stylos/
 docs/
 ```
 
@@ -69,10 +68,8 @@ cargo build
 
 ## Use as a git dependency
 
-Example using `stylos-config` directly from GitHub:
-
 ```bash
-cargo add stylos-config --git https://github.com/tasanakorn/stylos.git
+cargo add stylos --git https://github.com/tasanakorn/stylos.git
 ```
 
 Then build normally:
@@ -84,7 +81,7 @@ cargo build
 ## Example
 
 ```rust
-use stylos_config::StylosConfig;
+use stylos::StylosConfig;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cfg = StylosConfig::load_default()?;
@@ -101,7 +98,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 ## Notes
 
 - Config is JSON5-based
-- `stylos-session` uses `zenoh = 1.9.0`
+- `stylos` uses `zenoh = 1.9.0`
 - default multicast discovery address is `224.0.0.224:31746`
 - default data listeners are UDP + TCP on port `31747`
 

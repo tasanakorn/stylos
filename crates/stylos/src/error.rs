@@ -1,5 +1,3 @@
-//! Shared types, constants, and errors for stylos.
-
 use thiserror::Error;
 
 pub const STYLOS_MULTICAST_ADDR: &str = "224.0.0.224:31746";

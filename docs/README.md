@@ -12,3 +12,9 @@ Stylos documentation lives in this repository.
 | [poc.md](poc.md) | POC scenarios and smoke-test notes |
 | [cross-lang.md](cross-lang.md) | Rust/Go/Python/TS binding status and Go prereqs |
 | [origin.md](origin.md) | Origin in Stele and the move to this primary repo |
+
+## PRDs
+
+| PRD | Status | What |
+| --- | --- | --- |
+| [prd-001-consolidate-stylos-workspace-into-one-primary-crate.md](prd/prd-001-consolidate-stylos-workspace-into-one-primary-crate.md) | Proposed | Prefer one primary `stylos` crate and allow at most one optional second session crate only if `zenoh` dependency isolation is still required. |

@@ -1,7 +1,6 @@
-//! Stylos identity: Realm/Role/Instance newtypes + key-expr composer.
-
 use serde::{Deserialize, Serialize};
-use stylos_common::{Result, StylosError};
+
+use crate::{Result, StylosError};
 
 fn validate_segment(s: &str, field: &str) -> Result<()> {
     if s.is_empty() {

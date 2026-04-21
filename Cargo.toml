@@ -1,11 +1,5 @@
 [workspace]
-members = [
-    "crates/stylos-common",
-    "crates/stylos-identity",
-    "crates/stylos-config",
-    "crates/stylos-transport",
-    "crates/stylos-session",
-]
+members = ["crates/stylos"]
 resolver = "2"
 
 [workspace.dependencies]

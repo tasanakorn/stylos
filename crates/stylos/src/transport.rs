@@ -1,7 +1,6 @@
-//! Locator builders + port-walk.
-
 use std::net::{TcpListener, UdpSocket};
-use stylos_common::{Result, StylosError};
+
+use crate::{Result, StylosError};
 
 pub fn listen_endpoints(port: u16) -> Vec<String> {
     vec![format!("udp/0.0.0.0:{port}"), format!("tcp/0.0.0.0:{port}")]

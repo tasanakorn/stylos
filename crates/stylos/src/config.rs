@@ -1,12 +1,7 @@
-//! Stylos config schema + JSON5 loader.
-//!
-//! Shape: top-level { stylos: { realm, role, instance }, zenoh: { ... } }.
-//! The zenoh block uses UPSTREAM zenoh 1.x field names (listen_private_key etc).
-
 use serde::{Deserialize, Serialize};
 use std::path::{Path, PathBuf};
-use stylos_common::{Result, StylosError, STYLOS_MULTICAST_ADDR};
-use stylos_identity::StylosIdentity;
+
+use crate::{Result, StylosError, StylosIdentity, STYLOS_MULTICAST_ADDR};
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct StylosConfig {
