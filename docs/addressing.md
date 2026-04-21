@@ -65,3 +65,13 @@ Stylos uses raw zenoh key expressions under the `stylos/...` namespace.
 | `stylos/**` | the whole Stylos namespace |
 
 Application-defined subtrees may also introduce deeper or non-canonical path segments beneath `stylos/<realm>/...` as needed by the embedding application protocol.
+
+Application-defined segments such as `<hostname>:<pid>` are still a single key segment. As a result, zenoh single-segment wildcards such as `*` match them normally. For example:
+
+```text
+stylos/<realm>/themion/*/status
+```
+
+matches status keys published under application-defined instances like `<hostname>:<pid>`.
+
+This wildcard behavior does not make `<hostname>:<pid>` part of the canonical Stylos identity grammar; it only describes how application-level key paths are matched.
