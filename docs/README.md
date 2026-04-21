@@ -1,20 +1,20 @@
-# Stylos Documentation
+# Stylos documentation
 
 Stylos documentation lives in this repository.
 
-## Contents
+## Overview
 
-| Doc | What |
-| --- | --- |
-| [architecture.md](architecture.md) | Process model, crate split, config construction, data flow |
-| [addressing.md](addressing.md) | `stylos/<realm>/<role>/<instance>` key grammar and usage |
-| [discovery.md](discovery.md) | Multicast scouting, data listeners, failure modes |
-| [poc.md](poc.md) | POC scenarios and smoke-test notes |
-| [cross-lang.md](cross-lang.md) | Rust/Go/Python/TS binding status and Go prereqs |
-| [origin.md](origin.md) | Origin in Stele and the move to this primary repo |
+- [architecture.md](architecture.md) — high-level architecture and wire model
+- [discovery.md](discovery.md) — discovery behavior and expectations
+- [addressing.md](addressing.md) — key structure and addressing conventions
+
+## Notes
+
+- [poc.md](poc.md) | POC scenarios and smoke-test notes |
+- [cross-lang.md](cross-lang.md) | Rust/Go/Python/TS binding status and Go prereqs |
+- [origin.md](origin.md) | Origin in Stele and the move to this primary repo |
+- [case-study-themion-implemented-stylos-integration.md](case-study-themion-implemented-stylos-integration.md) | Case study of how Themion actually embeds Stylos for process identity, status reporting, discovery, direct instance queries, remote talk, and lightweight task delegation |
 
 ## PRDs
 
-| PRD | Status | What |
-| --- | --- | --- |
-| [prd-001-consolidate-stylos-workspace-into-one-primary-crate.md](prd/prd-001-consolidate-stylos-workspace-into-one-primary-crate.md) | Proposed | Prefer one primary `stylos` crate and allow at most one optional second session crate only if `zenoh` dependency isolation is still required. |
+See [prd/](prd/) for product requirement documents and implementation history.
