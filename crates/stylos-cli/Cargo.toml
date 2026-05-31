@@ -1,0 +1,16 @@
+[package]
+name = "stylos-cli"
+version.workspace = true
+edition.workspace = true
+description = "Stylos CLI — zenoh pub/sub/get/queryable"
+
+[[bin]]
+name = "stylos"
+path = "src/main.rs"
+
+[dependencies]
+stylos = { path = "../stylos" }
+clap = { workspace = true }
+tokio = { workspace = true }
+zenoh = { workspace = true }
+anyhow = { workspace = true }
